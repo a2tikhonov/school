@@ -22,19 +22,23 @@ public class StudentController {
         Student createdStudent = studentService.add(student);
         return ResponseEntity.ok(createdStudent);
     }
+    @GetMapping
+    public ResponseEntity<Collection<Student>> getAll() {
+        return ResponseEntity.ok(studentService.get());
+    }
 
     @GetMapping("{id}")
     public ResponseEntity getStudent(@PathVariable Long id) {
         Student student = studentService.getById(id);
-        if (student == null) {
-            return ResponseEntity.notFound().build();
-        } else {
+        if (student != null) {
             return ResponseEntity.ok(student);
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 
-    @GetMapping("{age}")
-    public ResponseEntity getStudent(@PathVariable int age) {
+    @GetMapping("/age")
+    public ResponseEntity getStudent(@RequestParam int age) {
         Collection<Student> students = studentService.filter(age);
         if (students == null) {
             return ResponseEntity.notFound().build();
@@ -45,7 +49,7 @@ public class StudentController {
 
     @PutMapping
     public ResponseEntity updateStudent(@RequestBody Student student) {
-        Student updatedStudent = studentService.set(student.getId(), student);
+        Student updatedStudent = studentService.set(student);
         if (updatedStudent == null) {
             return ResponseEntity.notFound().build();
         } else {
@@ -53,14 +57,10 @@ public class StudentController {
         }
     }
 
-    @DeleteMapping
-    public ResponseEntity deleteStudent(@RequestBody Student student) {
-        Student deletedStudent = studentService.remove(student);
-        if (deletedStudent == null) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok(deletedStudent);
-        }
+    @DeleteMapping("{id}")
+    public ResponseEntity deleteStudent(@PathVariable Long id) {
+        studentService.remove(id);
+        return ResponseEntity.ok().build();
     }
 
 }
