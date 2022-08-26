@@ -26,7 +26,7 @@ public class StudentService {
     }
 
     public Student getById(Long id) {
-        return studentRepository.findById(id).orElseThrow();
+        return studentRepository.findById(id).orElse(null);
     }
 
     public Student set(Student student) {
@@ -38,6 +38,6 @@ public class StudentService {
     }
 
     public Collection<Student> filter(int age) {
-        return studentRepository.findAll().stream().filter(p -> p.getAge() == age).collect(Collectors.toList());
+        return studentRepository.findByAge(age);
     }
 }

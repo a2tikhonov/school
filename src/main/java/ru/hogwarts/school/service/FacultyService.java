@@ -30,7 +30,7 @@ public class FacultyService {
     }
 
     public Faculty getById(Long id) {
-        return facultyRepository.findById(id).get();
+        return facultyRepository.findById(id).orElse(null);
     }
 
     public Faculty set(Faculty faculty) {
@@ -42,7 +42,7 @@ public class FacultyService {
     }
 
     public Collection<Faculty> filter(String color) {
-        return facultyRepository.findAll().stream().filter(p -> p.getColor().equals(color)).collect(Collectors.toList());
+        return facultyRepository.findByColor(color);
     }
 
 }
