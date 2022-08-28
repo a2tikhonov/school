@@ -4,12 +4,7 @@ import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.FacultyRepository;
-
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class FacultyService {
@@ -29,6 +24,18 @@ public class FacultyService {
         return facultyRepository.findAll();
     }
 
+    public Collection<Student> getAllStudentsInFaculty(Long id) {
+        return facultyRepository.findById(id).get().getStudents();
+    }
+
+    public Faculty getByName(String name) {
+        return facultyRepository.findByNameIgnoreCase(name);
+    }
+
+    public Faculty getByColor(String color) {
+        return facultyRepository.findByColorIgnoreCase(color);
+    }
+
     public Faculty getById(Long id) {
         return facultyRepository.findById(id).orElse(null);
     }
@@ -41,8 +48,5 @@ public class FacultyService {
         facultyRepository.deleteById(id);
     }
 
-    public Collection<Faculty> filter(String color) {
-        return facultyRepository.findByColor(color);
-    }
 
 }

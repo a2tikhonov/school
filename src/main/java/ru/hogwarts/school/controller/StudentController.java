@@ -23,7 +23,11 @@ public class StudentController {
         return ResponseEntity.ok(createdStudent);
     }
     @GetMapping
-    public ResponseEntity<Collection<Student>> getAll() {
+    public ResponseEntity<Collection<Student>> getStudents(@RequestParam(required = false) Integer min,
+                                                           @RequestParam(required = false) Integer max) {
+        if (min != null && max != null && min.intValue() > 0 && max.intValue() > 0) {
+            return ResponseEntity.ok(studentService.getByAgeBetween(min, max));
+        }
         return ResponseEntity.ok(studentService.get());
     }
 
@@ -41,6 +45,11 @@ public class StudentController {
     public ResponseEntity getStudent(@RequestParam int age) {
         Collection<Student> students = studentService.filter(age);
         return ResponseEntity.ok(students);
+    }
+
+    @GetMapping("/faculty")
+    public ResponseEntity getStudentFaculty(@RequestParam Long id) {
+        return ResponseEntity.ok(studentService.getStudentFaculty(id));
     }
 
     @PutMapping

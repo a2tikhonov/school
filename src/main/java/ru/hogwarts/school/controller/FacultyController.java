@@ -25,7 +25,13 @@ public class FacultyController {
     }
 
     @GetMapping
-    public ResponseEntity<Collection<Faculty>> getAll() {
+    public ResponseEntity get(@RequestParam(required = false) String color, @RequestParam(required = false) String name) {
+        if (color != null && !color.isBlank()) {
+            return ResponseEntity.ok(facultyService.getByColor(color));
+        }
+        if (name != null && !name.isBlank()) {
+            return ResponseEntity.ok(facultyService.getByName(name));
+        }
         return ResponseEntity.ok(facultyService.get());
     }
 
@@ -39,10 +45,9 @@ public class FacultyController {
         }
     }
 
-    @GetMapping("/color")
-    public ResponseEntity getFaculty(@RequestParam String color) {
-        Collection<Faculty> faculties = facultyService.filter(color);
-            return ResponseEntity.ok(faculties);
+    @GetMapping("/students")
+    public ResponseEntity getAllStudentsInFaculty(@RequestParam Long id) {
+        return ResponseEntity.ok(facultyService.getAllStudentsInFaculty(id));
     }
 
     @PutMapping

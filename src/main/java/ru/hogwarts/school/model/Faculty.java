@@ -3,9 +3,15 @@ package ru.hogwarts.school.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 @Entity
 public class Faculty {
+
+    @OneToMany(mappedBy = "faculty")
+    private Collection<Student> student;
     @Id
     @GeneratedValue(generator = "facultyGen")
     private Long id;
@@ -22,6 +28,10 @@ public class Faculty {
 
     public Faculty() {
 
+    }
+
+    public Collection<Student> getStudents() {
+        return List.copyOf(student);
     }
 
     @Override

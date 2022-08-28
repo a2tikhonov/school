@@ -1,11 +1,12 @@
 package ru.hogwarts.school.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 @Entity
 public class Student {
+    @ManyToOne
+    @JoinColumn(name = "faculty_id")
+    private Faculty faculty;
     @Id
     @GeneratedValue(generator = "studentGen")
     private Long id;
@@ -20,6 +21,10 @@ public class Student {
 
     public Student() {
 
+    }
+
+    public Faculty getFaculty() {
+        return faculty;
     }
 
     @Override
