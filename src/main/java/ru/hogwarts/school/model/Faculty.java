@@ -30,12 +30,12 @@ public class Faculty {
 
     }
 
-    public void setStudent(Collection<Student> student) {
-        this.student = student;
+    public Collection<Student> getStudent() {
+        return student;
     }
 
-    public Collection<Student> getStudents() {
-        return List.copyOf(student);
+    public void setStudent(Collection<Student> student) {
+        this.student = student;
     }
 
     @Override
