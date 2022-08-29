@@ -12,10 +12,10 @@ public class Faculty {
 
     @OneToMany(mappedBy = "faculty")
     private Collection<Student> student;
+
     @Id
     @GeneratedValue(generator = "facultyGen")
     private Long id;
-
     private String name;
 
     private String color;
@@ -28,6 +28,10 @@ public class Faculty {
 
     public Faculty() {
 
+    }
+
+    public void setStudent(Collection<Student> student) {
+        this.student = student;
     }
 
     public Collection<Student> getStudents() {

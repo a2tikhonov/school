@@ -30,7 +30,7 @@ public class StudentService {
     }
 
     public Faculty getStudentFaculty(Long id) {
-        return studentRepository.findById(id).get().getFaculty();
+        return studentRepository.findById(id).orElse(null).getFaculty();
     }
 
     public Student getById(Long id) {
