@@ -30,7 +30,7 @@ public class StudentService {
     }
 
     public Faculty getStudentFaculty(Long id) {
-        return studentRepository.findById(id).orElse(null).getFaculty();
+        return studentRepository.findById(id).map(Student::getFaculty).orElse(null);
     }
 
     public Student getById(Long id) {
