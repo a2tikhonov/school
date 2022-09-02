@@ -93,7 +93,7 @@ public class StudentController {
         Avatar avatar = studentService.findAvatar(id);
         Path path = Path.of(avatar.getFilePath());
         try (InputStream inputStream = Files.newInputStream(path);
-             OutputStream outputStream = response.getOutputStream();) {
+             OutputStream outputStream = response.getOutputStream()) {
             response.setStatus(200);
             response.setContentType(avatar.getMediaType());
             response.setContentLength((int) avatar.getFileSize());
