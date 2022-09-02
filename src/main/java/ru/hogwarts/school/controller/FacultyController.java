@@ -44,7 +44,7 @@ public class FacultyController {
     }
 
     @GetMapping("/{id}/students")
-    public ResponseEntity<List<Collection<Student>>> getAllStudentsInFaculty(@PathVariable Long id) {
+    public ResponseEntity<Collection<Student>> getAllStudentsInFaculty(@PathVariable Long id) {
         return ResponseEntity.ok(facultyService.getAllStudentsInFaculty(id));
     }
 

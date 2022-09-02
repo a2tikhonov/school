@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.FacultyRepository;
+import ru.hogwarts.school.repositories.StudentRepository;
+
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,8 +16,11 @@ public class FacultyService {
 
     private final FacultyRepository facultyRepository;
 
-    public FacultyService(FacultyRepository facultyRepository) {
+    private final StudentRepository studentRepository;
+
+    public FacultyService(FacultyRepository facultyRepository, StudentRepository studentRepository) {
         this.facultyRepository = facultyRepository;
+        this.studentRepository = studentRepository;
     }
 
 
@@ -27,8 +32,8 @@ public class FacultyService {
         return facultyRepository.findAll();
     }
 
-    public List<Collection<Student>> getAllStudentsInFaculty(Long id) {
-        return facultyRepository.findAll().stream().filter(n -> n.getId() == id).map(p -> p.getStudent()).collect(Collectors.toList());
+    public Collection<Student> getAllStudentsInFaculty(Long id) {
+        return studentRepository.findByFacultyId(id);
     }
 
     public Collection<Faculty> getByColorOrName(String color, String name) {
