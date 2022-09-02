@@ -5,7 +5,9 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.FacultyRepository;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FacultyService {
@@ -25,8 +27,8 @@ public class FacultyService {
         return facultyRepository.findAll();
     }
 
-    public Collection<Student> getAllStudentsInFaculty(Long id) {
-        return facultyRepository.findAllById(id);
+    public List<Collection<Student>> getAllStudentsInFaculty(Long id) {
+        return facultyRepository.findAll().stream().filter(n -> n.getId() == id).map(p -> p.getStudent()).collect(Collectors.toList());
     }
 
     public Collection<Faculty> getByColorOrName(String color, String name) {

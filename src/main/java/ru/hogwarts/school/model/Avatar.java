@@ -15,12 +15,21 @@ public class Avatar {
     private long fileSize;
 
     private String mediaType;
-    @Lob
+    //@Lob
     private byte[] data;
     @OneToOne
     private Student student;
 
     public Avatar() {
+    }
+
+    public Avatar(Long id, String filePath, long fileSize, String mediaType, byte[] data, Student student) {
+        this.filePath = filePath;
+        this.fileSize = fileSize;
+        this.mediaType = mediaType;
+        this.data = data;
+        this.student = student;
+        this.id = id;
     }
 
     @Override
@@ -48,14 +57,6 @@ public class Avatar {
         int result = Objects.hash(id, filePath, fileSize, mediaType, student);
         result = 31 * result + Arrays.hashCode(data);
         return result;
-    }
-
-    public Avatar(String filePath, long fileSize, String mediaType, byte[] data, Student student) {
-        this.filePath = filePath;
-        this.fileSize = fileSize;
-        this.mediaType = mediaType;
-        this.data = data;
-        this.student = student;
     }
 
     public String getFilePath() {
@@ -88,5 +89,21 @@ public class Avatar {
 
     public void setData(byte[] data) {
         this.data = data;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

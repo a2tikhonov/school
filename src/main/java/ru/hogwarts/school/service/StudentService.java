@@ -73,7 +73,8 @@ public class StudentService {
         try (InputStream inputStream = file.getInputStream();
              OutputStream outputStream = Files.newOutputStream(filePath, CREATE_NEW);
              BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream, 1024);
-             BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream, 1024);) {
+             BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream, 1024))
+        {
             bufferedInputStream.transferTo(bufferedOutputStream);
         }
         Avatar avatar = avatarRepository.findByStudentId(studentId).orElse(new Avatar());
@@ -81,6 +82,7 @@ public class StudentService {
         avatar.setFileSize(file.getSize());
         avatar.setMediaType(file.getContentType());
         avatar.setData(compressImage(filePath));
+        avatar.setStudent(student);
         avatarRepository.save(avatar);
     }
 

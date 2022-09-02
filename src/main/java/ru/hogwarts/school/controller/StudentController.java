@@ -81,7 +81,7 @@ public class StudentController {
 
     @PostMapping(value = "/{id}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadAvatar(@PathVariable Long id, @RequestParam MultipartFile avatar) throws IOException {
-        if (avatar.getSize() >= 300 * 300) {
+        if (avatar.getSize() > 400 * 400) {
             return ResponseEntity.badRequest().body("File is too big");
         }
         studentService.uploadAvatar(id, avatar);
