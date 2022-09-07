@@ -4,6 +4,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.model.Avatar;
@@ -18,6 +19,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.Collections;
 
 @RestController
 @RequestMapping("/student")
@@ -67,6 +69,21 @@ public class StudentController {
         return ResponseEntity.ok(studentService.getStudentFaculty(id));
     }
 
+    @GetMapping("/get-amount")
+    public Long getAmountOfStudents() {
+        return studentService.getAmountOfStudents();
+    }
+
+    @GetMapping("/get-avg-age")
+    public Long getAvgOfStudentsAge() {
+        return studentService.getAvgOfStudentsAge();
+    }
+
+    @GetMapping("/get-5-last")
+    public Collection<Student> get5Last() {
+        return studentService.get5Last();
+    }
+
     @PutMapping
     public ResponseEntity<Student> updateStudent(@RequestBody Student student) {
         Student updatedStudent = studentService.set(student);
@@ -100,6 +117,7 @@ public class StudentController {
             inputStream.transferTo(outputStream);
         }
     }
+
 
     @GetMapping(value = "/{id}/avatar/preview")
     public ResponseEntity<byte[]> downloadAvatar(@PathVariable Long id) {

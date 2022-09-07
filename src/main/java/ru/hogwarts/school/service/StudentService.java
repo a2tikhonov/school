@@ -1,12 +1,15 @@
 package ru.hogwarts.school.service;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.model.Avatar;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.AvatarRepository;
+import ru.hogwarts.school.repositories.AvatarsDataRepository;
 import ru.hogwarts.school.repositories.StudentRepository;
 
 import javax.imageio.ImageIO;
@@ -16,6 +19,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.Collections;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
@@ -23,12 +27,15 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 public class StudentService {
     private final StudentRepository studentRepository;
     private final AvatarRepository avatarRepository;
+
+    private final AvatarsDataRepository avatarsDataRepository;
     @Value("${path.to.avatars.folder}")
     private String avatarsDir;
 
-    public StudentService(StudentRepository studentRepository, AvatarRepository avatarRepository) {
+    public StudentService(StudentRepository studentRepository, AvatarRepository avatarRepository, AvatarsDataRepository avatarsDataRepository) {
         this.studentRepository = studentRepository;
         this.avatarRepository = avatarRepository;
+        this.avatarsDataRepository = avatarsDataRepository;
     }
 
 
@@ -90,6 +97,11 @@ public class StudentService {
         return avatarRepository.findByStudentId(id).orElse(null);
     }
 
+    public Collection<Avatar> getAvatars(Integer pageNumber, Integer pageSize) {
+        PageRequest request = PageRequest.of(pageNumber - 1, pageSize);
+        return avatarsDataRepository.findAll(request).getContent();
+    }
+
     private String getFileExtension(String fileName) {
         return fileName.substring(fileName.indexOf(".") + 1);
     }
@@ -108,5 +120,17 @@ public class StudentService {
             ImageIO.write(preview, getFileExtension(filePath.getFileName().toString()), byteArrayOutputStream);
             return byteArrayOutputStream.toByteArray();
         }
+    }
+
+    public Long getAmountOfStudents() {
+        return studentRepository.findAmountOfStudents();
+    }
+
+    public Long getAvgOfStudentsAge() {
+        return studentRepository.findAverageAgeOfStudents();
+    }
+
+    public Collection<Student> get5Last() {
+        return studentRepository.findLast5Students();
     }
 }
