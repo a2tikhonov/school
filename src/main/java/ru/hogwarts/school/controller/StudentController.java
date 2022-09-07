@@ -75,7 +75,7 @@ public class StudentController {
     }
 
     @GetMapping("/get-avg-age")
-    public Long getAvgOfStudentsAge() {
+    public Float getAvgOfStudentsAge() {
         return studentService.getAvgOfStudentsAge();
     }
 

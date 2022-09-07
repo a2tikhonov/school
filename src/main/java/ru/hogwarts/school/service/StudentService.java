@@ -1,7 +1,6 @@
 package ru.hogwarts.school.service;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -9,7 +8,6 @@ import ru.hogwarts.school.model.Avatar;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.AvatarRepository;
-import ru.hogwarts.school.repositories.AvatarsDataRepository;
 import ru.hogwarts.school.repositories.StudentRepository;
 
 import javax.imageio.ImageIO;
@@ -19,7 +17,6 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
-import java.util.Collections;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
@@ -27,15 +24,12 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 public class StudentService {
     private final StudentRepository studentRepository;
     private final AvatarRepository avatarRepository;
-
-    private final AvatarsDataRepository avatarsDataRepository;
     @Value("${path.to.avatars.folder}")
     private String avatarsDir;
 
-    public StudentService(StudentRepository studentRepository, AvatarRepository avatarRepository, AvatarsDataRepository avatarsDataRepository) {
+    public StudentService(StudentRepository studentRepository, AvatarRepository avatarRepository) {
         this.studentRepository = studentRepository;
         this.avatarRepository = avatarRepository;
-        this.avatarsDataRepository = avatarsDataRepository;
     }
 
 
@@ -99,7 +93,7 @@ public class StudentService {
 
     public Collection<Avatar> getAvatars(Integer pageNumber, Integer pageSize) {
         PageRequest request = PageRequest.of(pageNumber - 1, pageSize);
-        return avatarsDataRepository.findAll(request).getContent();
+        return avatarRepository.findAll(request).getContent();
     }
 
     private String getFileExtension(String fileName) {
@@ -126,7 +120,7 @@ public class StudentService {
         return studentRepository.findAmountOfStudents();
     }
 
-    public Long getAvgOfStudentsAge() {
+    public Float getAvgOfStudentsAge() {
         return studentRepository.findAverageAgeOfStudents();
     }
 
