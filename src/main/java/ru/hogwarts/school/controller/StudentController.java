@@ -105,6 +105,11 @@ public class StudentController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping(value = "/avatars")
+    public ResponseEntity<Collection<Avatar>> getAvatars(@RequestParam("pageNumber") Integer pageNumber, @RequestParam("pageSize") Integer pageSize) {
+        return ResponseEntity.ok(studentService.getAvatars(pageNumber, pageSize));
+    }
+
     @GetMapping(value = "/{id}/avatar")
     public void downloadAvatar(@PathVariable Long id, HttpServletResponse response) throws IOException {
         Avatar avatar = studentService.findAvatar(id);
