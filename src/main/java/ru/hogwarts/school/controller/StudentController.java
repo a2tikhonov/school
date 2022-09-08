@@ -70,18 +70,18 @@ public class StudentController {
     }
 
     @GetMapping("/get-amount")
-    public Long getAmountOfStudents() {
-        return studentService.getAmountOfStudents();
+    public ResponseEntity<Long> getAmountOfStudents() {
+        return ResponseEntity.ok(studentService.getAmountOfStudents());
     }
 
     @GetMapping("/get-avg-age")
-    public Float getAvgOfStudentsAge() {
-        return studentService.getAvgOfStudentsAge();
+    public ResponseEntity<Float> getAvgOfStudentsAge() {
+        return ResponseEntity.ok(studentService.getAvgOfStudentsAge());
     }
 
     @GetMapping("/get-5-last")
-    public Collection<Student> get5Last() {
-        return studentService.get5Last();
+    public ResponseEntity<Collection<Student>> get5Last() {
+        return ResponseEntity.ok(studentService.get5Last());
     }
 
     @PutMapping
