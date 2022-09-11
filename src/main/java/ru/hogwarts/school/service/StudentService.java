@@ -66,6 +66,16 @@ public class StudentService {
         return studentRepository.findByAge(age);
     }
 
+    public void deleteAvatar(Long id) throws  IOException {
+        Avatar avatar = avatarRepository.findByStudentId(id).orElse(null);
+        if (avatar != null) {
+            File file = new File(avatar.getFilePath());
+            file.delete();
+        }
+        avatarRepository.deleteById(id);
+
+    }
+
     public void uploadAvatar(Long studentId, MultipartFile file) throws IOException {
         Student student = getById(studentId);
         Path filePath = Path.of(avatarsDir, studentId + "." + getFileExtension(file.getOriginalFilename()));
