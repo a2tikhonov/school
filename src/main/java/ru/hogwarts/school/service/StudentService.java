@@ -137,4 +137,8 @@ public class StudentService {
     public Collection<Student> get5Last() {
         return studentRepository.findLast5Students();
     }
+
+    public Collection<Student> getStudentsByName(String name) {
+        return studentRepository.getStudentsByName(name);
+    }
 }
