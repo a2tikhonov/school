@@ -1,5 +1,7 @@
 package ru.hogwarts.school.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,8 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
 @Service
 public class StudentService {
+
+    Logger logger = LoggerFactory.getLogger(StudentService.class);
     private final StudentRepository studentRepository;
     private final AvatarRepository avatarRepository;
     @Value("${path.to.avatars.folder}")
@@ -34,39 +38,48 @@ public class StudentService {
 
 
     public Student add(Student student) {
+        logger.debug("adding student: {}", student);
         return studentRepository.save(student);
     }
 
     public Collection<Student> get() {
+        logger.debug("getting students collection");
         return studentRepository.findAll();
     }
 
     public Collection<Student> getByAgeBetween(int min, int max) {
+        logger.debug("getting students collection with age between: {} and {}", min, max);
         return studentRepository.findByAgeBetween(min, max);
     }
 
     public Faculty getStudentFaculty(Long id) {
+        logger.debug("getting student faculty by student id: {}", id);
         return studentRepository.findById(id).map(Student::getFaculty).orElse(null);
     }
 
     public Student getById(Long id) {
+        logger.debug("getting student by id: {}", id);
         return studentRepository.findById(id).orElse(null);
     }
 
 
     public Student set(Student student) {
+        logger.debug("saving student by entity: {}", student);
         return studentRepository.save(student);
     }
 
     public void remove(Long id) {
+        logger.debug("removing student by id: {}", id);
         studentRepository.deleteById(id);
     }
 
     public Collection<Student> filter(int age) {
+        logger.debug("getting students collection by age: {}", age);
         return studentRepository.findByAge(age);
     }
 
     public void deleteAvatar(Long id) throws  IOException {
+        logger.debug("deleting student avatar by id: {}", id);
         Avatar avatar = avatarRepository.findByStudentId(id).orElse(null);
         if (avatar != null) {
             File file = new File(avatar.getFilePath());
@@ -77,6 +90,7 @@ public class StudentService {
     }
 
     public void uploadAvatar(Long studentId, MultipartFile file) throws IOException {
+        logger.debug("uploading student avatar by id: {}", studentId);
         Student student = getById(studentId);
         Path filePath = Path.of(avatarsDir, studentId + "." + getFileExtension(file.getOriginalFilename()));
         Files.createDirectories(filePath.getParent());
@@ -98,19 +112,23 @@ public class StudentService {
     }
 
     public Avatar findAvatar(Long id) {
+        logger.debug("finding student avatar by id: {}", id);
         return avatarRepository.findByStudentId(id).orElse(null);
     }
 
     public Collection<Avatar> getAvatars(Integer pageNumber, Integer pageSize) {
+        logger.debug("getting students avatars by pageNumber and Size: {} and {}", pageNumber, pageSize);
         PageRequest request = PageRequest.of(pageNumber - 1, pageSize);
         return avatarRepository.findAll(request).getContent();
     }
 
     private String getFileExtension(String fileName) {
+        logger.debug("getting file extension: {}", fileName);
         return fileName.substring(fileName.indexOf(".") + 1);
     }
 
     private byte[] compressImage(Path filePath) throws IOException {
+        logger.debug("compressing avatar image located in: {}", filePath);
         try (InputStream inputStream = Files.newInputStream(filePath);
              BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream, 1024);
              ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()
@@ -127,18 +145,22 @@ public class StudentService {
     }
 
     public Long getAmountOfStudents() {
+        logger.debug("finding amount of students");
         return studentRepository.findAmountOfStudents();
     }
 
     public Float getAvgOfStudentsAge() {
+        logger.debug("getting average students age");
         return studentRepository.findAverageAgeOfStudents();
     }
 
     public Collection<Student> get5Last() {
+        logger.debug("getting last five students from db");
         return studentRepository.findLast5Students();
     }
 
     public Collection<Student> getStudentsByName(String name) {
+        logger.debug("getting students collection by name: {}", name);
         return studentRepository.getStudentsByName(name);
     }
 }
