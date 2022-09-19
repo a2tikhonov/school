@@ -18,6 +18,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.OptionalDouble;
 
 @RestController
 @RequestMapping("/student")
@@ -46,6 +47,21 @@ public class StudentController {
     @GetMapping("/name/{name}")
     public ResponseEntity<Collection<Student>> getStudentsByName(@PathVariable("name") String name) {
         return ResponseEntity.ok(studentService.getStudentsByName(name));
+    }
+
+    @GetMapping("/findByNameFirstLetter/{letter}")
+    public ResponseEntity<Collection<String>> findByNameFirstLetter(@PathVariable("letter") Character letter) {
+        return ResponseEntity.ok(studentService.findByNameFirstLetter(letter));
+    }
+
+    @GetMapping("/average")
+    public ResponseEntity<OptionalDouble> getAverageAge() {
+        OptionalDouble result = studentService.getAverageAge();
+        if (result.isPresent()) {
+            return ResponseEntity.ok(result);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
     }
 
     @GetMapping("/{id}")

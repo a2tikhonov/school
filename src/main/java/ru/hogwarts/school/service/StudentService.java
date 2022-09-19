@@ -19,13 +19,15 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.OptionalDouble;
+import java.util.stream.Collectors;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
 @Service
 public class StudentService {
 
-    Logger logger = LoggerFactory.getLogger(StudentService.class);
+    private final Logger logger = LoggerFactory.getLogger(StudentService.class);
     private final StudentRepository studentRepository;
     private final AvatarRepository avatarRepository;
     @Value("${path.to.avatars.folder}")
@@ -76,6 +78,15 @@ public class StudentService {
     public Collection<Student> filter(int age) {
         logger.debug("getting students collection by age: {}", age);
         return studentRepository.findByAge(age);
+    }
+
+    public Collection<String> findByNameFirstLetter(Character letter) {
+        return studentRepository.findAll().stream().map(n -> n.getName().toUpperCase()).filter(p -> p.startsWith(letter.toString()))
+                .sorted().collect(Collectors.toList());
+    }
+
+    public OptionalDouble getAverageAge() {
+        return studentRepository.findAll().stream().mapToDouble(p -> p.getAge()).average();
     }
 
     public void deleteAvatar(Long id) throws  IOException {

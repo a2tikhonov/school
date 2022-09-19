@@ -42,6 +42,16 @@ public class FacultyController {
         }
     }
 
+    @GetMapping("/longestName")
+    public ResponseEntity<String> findLogestFacultyName() {
+        String name = facultyService.findLogestFacultyName();
+        if (name != null) {
+            return ResponseEntity.ok(name);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @GetMapping("/{id}/students")
     public ResponseEntity<Collection<Student>> getAllStudentsInFaculty(@PathVariable Long id) {
         return ResponseEntity.ok(facultyService.getAllStudentsInFaculty(id));

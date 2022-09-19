@@ -9,11 +9,12 @@ import ru.hogwarts.school.repositories.FacultyRepository;
 import ru.hogwarts.school.repositories.StudentRepository;
 
 import java.util.Collection;
+import java.util.Comparator;
 
 @Service
 public class FacultyService {
 
-    Logger logger1 = LoggerFactory.getLogger(StudentService.class);
+    private final Logger logger1 = LoggerFactory.getLogger(FacultyService.class);
 
     private final FacultyRepository facultyRepository;
 
@@ -33,6 +34,12 @@ public class FacultyService {
     public Collection<Faculty> get() {
         logger1.debug("getting faculties collection");
         return facultyRepository.findAll();
+    }
+
+    public String findLogestFacultyName() {
+        return facultyRepository.findAll().stream().map(p -> p.getName())
+                .max(Comparator.comparing(String::valueOf)).orElse(null);
+
     }
 
     public Collection<Student> getAllStudentsInFaculty(Long id) {

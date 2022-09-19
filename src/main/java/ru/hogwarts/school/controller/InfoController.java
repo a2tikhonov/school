@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.hogwarts.school.service.InfoService;
 
+import java.util.stream.Stream;
+
 @RestController
 @RequestMapping("/info")
 public class InfoController {
@@ -19,5 +21,10 @@ public class InfoController {
     @GetMapping("/getPort")
     public ResponseEntity<Integer> getPort() {
         return ResponseEntity.ok(infoService.getPort());
+    }
+
+    @GetMapping("/integer")
+    public ResponseEntity<Integer> getInteger() {
+        return ResponseEntity.ok(infoService.getSum());
     }
 }
