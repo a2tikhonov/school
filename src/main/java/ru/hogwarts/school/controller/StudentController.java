@@ -55,10 +55,10 @@ public class StudentController {
     }
 
     @GetMapping("/average")
-    public ResponseEntity<OptionalDouble> getAverageAge() {
-        OptionalDouble result = studentService.getAverageAge();
-        if (result.isPresent()) {
-            return ResponseEntity.ok(result);
+    public ResponseEntity<Double> getAverageAge() {
+        Double result = studentService.getAverageAge();
+        if (result != -1) {
+            return ResponseEntity.ok(result.doubleValue());
         } else {
             return ResponseEntity.noContent().build();
         }

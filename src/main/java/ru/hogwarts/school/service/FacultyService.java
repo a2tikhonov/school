@@ -38,7 +38,7 @@ public class FacultyService {
 
     public String findLogestFacultyName() {
         return facultyRepository.findAll().stream().map(p -> p.getName())
-                .max(Comparator.comparing(String::valueOf)).orElse(null);
+                .max(Comparator.comparing(n -> n.length())).orElse(null);
 
     }
 

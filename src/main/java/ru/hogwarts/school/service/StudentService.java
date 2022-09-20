@@ -19,7 +19,6 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
-import java.util.OptionalDouble;
 import java.util.stream.Collectors;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
@@ -85,8 +84,8 @@ public class StudentService {
                 .sorted().collect(Collectors.toList());
     }
 
-    public OptionalDouble getAverageAge() {
-        return studentRepository.findAll().stream().mapToDouble(p -> p.getAge()).average();
+    public Double getAverageAge() {
+        return studentRepository.findAll().stream().mapToDouble(p -> p.getAge()).average().orElse(-1);
     }
 
     public void deleteAvatar(Long id) throws  IOException {
