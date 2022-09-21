@@ -16,25 +16,7 @@ public class InfoService {
     }
 
     public Integer getSum() {
-        int sum = 0;
-        for (int i = 1; i <= 1_000_000; i++) {
-            sum += i;
-        }
-        return sum;
+        return Stream.iterate(1, a -> a + 1) .limit(1_000_000) .parallel().reduce(0, (a, b) -> a + b );
     }
-
-/*    long startTime = System.currentTimeMillis();
-    Integer suma = Stream.iterate(1, a -> a +1) .limit(1_000_000) .reduce(0, (a, b) -> a + b );
-    long endTime = System.currentTimeMillis();
-        System.out.println("(endTime - startTime) = " + (endTime - startTime)); //~27ms
-        System.out.println("sum = " + suma);
-    startTime = System.currentTimeMillis();
-    int sum = 0;
-        for (int i = 1; i <= 1_000_000; i++) {
-        sum += i;
-    }
-    endTime = System.currentTimeMillis();
-        System.out.println("(endTime - startTime) = " + (endTime - startTime));//~4ms
-        System.out.println("sum = " + sum);*/
 
 }
