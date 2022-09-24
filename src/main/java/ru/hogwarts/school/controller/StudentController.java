@@ -103,6 +103,18 @@ public class StudentController {
         return ResponseEntity.ok(studentService.get5Last());
     }
 
+    @GetMapping("/threads")
+    public ResponseEntity getStudents() {
+        studentService.getStudents();
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/threads-sync")
+    public ResponseEntity getStudentsSync() {
+        studentService.getStudentsSync();
+        return ResponseEntity.ok().build();
+    }
+
     @PutMapping
     public ResponseEntity<Student> updateStudent(@RequestBody Student student) {
         Student updatedStudent = studentService.set(student);

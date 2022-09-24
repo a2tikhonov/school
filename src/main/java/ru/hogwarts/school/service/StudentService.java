@@ -18,6 +18,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -31,6 +32,8 @@ public class StudentService {
     private final AvatarRepository avatarRepository;
     @Value("${path.to.avatars.folder}")
     private String avatarsDir;
+
+    private Integer count = 0;
 
     public StudentService(StudentRepository studentRepository, AvatarRepository avatarRepository) {
         this.studentRepository = studentRepository;
@@ -46,6 +49,39 @@ public class StudentService {
     public Collection<Student> get() {
         logger.debug("getting students collection");
         return studentRepository.findAll();
+    }
+
+    public void getStudents() {
+        ArrayList<Student> students = new ArrayList<>(get());
+        System.out.println("students.get(0) = " + students.get(0).getName());
+        System.out.println("students.get(1) = " + students.get(1).getName());
+        new Thread(() -> {
+            System.out.println("students.get(2) = " + students.get(2).getName());
+            System.out.println("students.get(3) = " + students.get(3).getName());
+        }).start();
+        new Thread(() -> {
+            System.out.println("students.get(4) = " + students.get(4).getName());
+            System.out.println("students.get(5) = " + students.get(5).getName());
+        }).start();
+    }
+
+    private synchronized void gets(ArrayList<Student> students) {
+        System.out.println(this.count + " " + students.get(this.count++).getName());
+        System.out.println(this.count + " " + students.get(this.count++).getName());
+    }
+
+
+    public void getStudentsSync() {
+        count = 0;
+        ArrayList<Student> students = new ArrayList<>(get());
+        System.out.println(count + " " + students.get(count++).getName());
+        System.out.println(count + " " + students.get(count++).getName());
+        new Thread(() -> {
+            gets(students);
+        }).start();
+        new Thread(() -> {
+            gets(students);
+        }).start();
     }
 
     public Collection<Student> getByAgeBetween(int min, int max) {
